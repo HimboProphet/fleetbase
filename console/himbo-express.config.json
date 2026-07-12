@@ -1,0 +1,8 @@
+{
+    "API_HOST": "https://himbo.express",
+    "API_NAMESPACE": "int/v1",
+    "SOCKETCLUSTER_HOST": "himbo.express",
+    "SOCKETCLUSTER_SECURE": true,
+    "SOCKETCLUSTER_PORT": 443,
+    "SOCKETCLUSTER_PATH": "/socketcluster/"
+}

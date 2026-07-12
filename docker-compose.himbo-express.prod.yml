@@ -1,0 +1,158 @@
+services:
+  cache:
+    image: redis:7-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  database:
+    image: mysql:8.0-oracle
+    restart: unless-stopped
+    volumes:
+      - fleetbase_mysql:/var/lib/mysql
+    env_file:
+      - /opt/himbo-express/secrets/app.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${HIMBO_MYSQL_ROOT_PASSWORD:?HIMBO_MYSQL_ROOT_PASSWORD must be set in /opt/himbo-express/secrets/app.env or the deploy environment}
+      MYSQL_DATABASE: "fleetbase"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  socket:
+    image: socketcluster/socketcluster:v17.4.0
+    platform: linux/amd64
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:18100:8000"
+    environment:
+      SOCKETCLUSTER_WORKERS: 2
+      SOCKETCLUSTER_BROKERS: 2
+      SOCKETCLUSTER_OPTIONS: '{"origins":"https://himbo.express:*"}'
+
+  application:
+    image: himbo-express-api:prod
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: app-release
+      args:
+        ENVIRONMENT: production
+    restart: unless-stopped
+    env_file:
+      - /opt/himbo-express/secrets/app.env
+    environment: &himbo_api_env
+      APP_NAME: HIMBO EXPRESS
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: https://himbo.express
+      CONSOLE_HOST: https://himbo.express
+      CONSOLE_RHINO_ID_HANDOFF_PATH: /dispatch/rhino-id
+      SESSION_DOMAIN: himbo.express
+      SESSION_SECURE_COOKIE: "true"
+      SANCTUM_STATEFUL_DOMAINS: himbo.express,www.himbo.express
+      DATABASE_URL: mysql://root:${HIMBO_MYSQL_ROOT_PASSWORD:?HIMBO_MYSQL_ROOT_PASSWORD must be set}@database/fleetbase
+      QUEUE_CONNECTION: redis
+      CACHE_DRIVER: redis
+      CACHE_PATH: /fleetbase/api/storage/framework/cache
+      CACHE_URL: tcp://cache
+      REDIS_URL: tcp://cache
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      BROADCAST_DRIVER: socketcluster
+      MAIL_MAILER: ${HIMBO_MAIL_MAILER:-log}
+      MAIL_FROM_ADDRESS: dispatch@himbo.express
+      MAIL_FROM_NAME: HIMBO EXPRESS
+      LOG_CHANNEL: daily
+      REGISTRY_HOST: https://registry.fleetbase.io
+      REGISTRY_PREINSTALLED_EXTENSIONS: "true"
+      OSRM_HOST: ${HIMBO_OSRM_HOST:?HIMBO_OSRM_HOST must point to a production routing service}
+      RHINO_ID_BASE_URL: https://id.2rhino.com
+      RHINO_ID_ALLOWED_EMAILS: travis@2rhino.com
+      RHINO_ID_ALLOWED_EMAIL_DOMAINS: 2rhino.com
+      RHINO_ID_REQUIRE_EXACT_EMAILS: "true"
+      RHINO_ID_EXCHANGE_RATE_LIMIT_PER_MINUTE: "12"
+      RHINO_ID_FLEETBASE_TOKEN_TTL_MINUTES: "120"
+      HIMBO_EXPRESS_DISPATCH_USER_EMAIL: admin@himbo.express
+    volumes:
+      - fleetbase_storage:/fleetbase/api/storage/app
+    depends_on:
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+      socket:
+        condition: service_started
+
+  queue:
+    image: himbo-express-api:prod
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: events-dev
+      args:
+        ENVIRONMENT: production
+    restart: unless-stopped
+    env_file:
+      - /opt/himbo-express/secrets/app.env
+    environment: *himbo_api_env
+    volumes:
+      - fleetbase_storage:/fleetbase/api/storage/app
+    depends_on:
+      application:
+        condition: service_started
+
+  scheduler:
+    image: himbo-express-api:prod
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: scheduler-dev
+      args:
+        ENVIRONMENT: production
+    restart: unless-stopped
+    env_file:
+      - /opt/himbo-express/secrets/app.env
+    environment: *himbo_api_env
+    volumes:
+      - fleetbase_storage:/fleetbase/api/storage/app
+    depends_on:
+      application:
+        condition: service_started
+
+  httpd:
+    build:
+      context: .
+      dockerfile: docker/httpd/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:18080:80"
+    environment:
+      NGINX_APPLICATION_HOSTNAME: application
+    depends_on:
+      application:
+        condition: service_started
+
+  console:
+    build:
+      context: ./console
+      dockerfile: Dockerfile
+      args:
+        ENVIRONMENT: production
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:14200:4200"
+    volumes:
+      - ./console/himbo-express.config.json:/usr/share/nginx/html/fleetbase.config.json:ro
+    depends_on:
+      httpd:
+        condition: service_started
+
+volumes:
+  fleetbase_mysql:
+  fleetbase_storage:

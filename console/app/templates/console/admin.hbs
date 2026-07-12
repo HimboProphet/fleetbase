@@ -5,6 +5,7 @@
     <Layout::Sidebar::Item @route="console.admin.organizations" @icon="building">{{t "console.admin.menu.organizations"}}</Layout::Sidebar::Item>
     <Layout::Sidebar::Item @route="console.admin.branding" @icon="palette">{{t "console.admin.menu.branding"}}</Layout::Sidebar::Item>
     <Layout::Sidebar::Item @route="console.admin.two-fa-settings" @icon="shield-halved">{{t "console.admin.menu.2fa-config"}}</Layout::Sidebar::Item>
+    <Layout::Sidebar::Item @route="console.admin.permissions-matrix" @icon="table-cells">Permissions Matrix</Layout::Sidebar::Item>
     <Layout::Sidebar::Item @route="console.admin.schedule-monitor" @icon="calendar-check">{{t "console.admin.schedule-monitor.schedule-monitor"}}</Layout::Sidebar::Item>
     
     {{#each this.menuService.adminMenuItems as |menuItem|}}

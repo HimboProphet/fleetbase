@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#060807">
+  <meta property="og:title" content="Become a HIMBO EXPRESS Courier">
+  <meta property="og:description" content="Verified RHINO ID gated independent contractor enrollment for HIMBO EXPRESS couriers in Wilton Manors.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://himbo.express/couriers/apply">
+  <meta property="og:image" content="https://himbo.express/himbo-assets/himbo-express-logo.png">
+  <link rel="icon" href="/himbo-assets/himbo-express-logo.png">
+  <title>Become a HIMBO EXPRESS Courier</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050706;
+      --panel: rgba(8, 12, 11, 0.78);
+      --panel-strong: rgba(15, 20, 20, 0.92);
+      --ink: #f8fbf6;
+      --muted: rgba(248, 251, 246, 0.7);
+      --quiet: rgba(248, 251, 246, 0.48);
+      --line: rgba(248, 251, 246, 0.18);
+      --accent: #18d99b;
+      --hot: #ff4e7d;
+      --gold: #f4d35e;
+      --bad: #ff8175;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--bg); }
+
+    body {
+      min-height: 100svh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 78% 16%, rgba(24, 217, 155, 0.16), transparent 24rem),
+        radial-gradient(circle at 15% 36%, rgba(255, 78, 125, 0.12), transparent 24rem),
+        #050706;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px clamp(20px, 4vw, 52px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(5, 7, 6, 0.72);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      min-width: 0;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 720;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      object-fit: cover;
+      box-shadow: 0 0 34px rgba(24, 217, 155, 0.16);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--quiet);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+    }
+
+    .nav a,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid rgba(248, 251, 246, 0.28);
+      border-radius: 7px;
+      color: var(--ink);
+      text-decoration: none;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .nav a:hover,
+    .button:hover {
+      border-color: rgba(24, 217, 155, 0.72);
+      background: rgba(24, 217, 155, 0.08);
+      transform: translateY(-1px);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(360px, 0.82fr);
+      gap: clamp(28px, 5vw, 72px);
+      align-items: start;
+      padding: clamp(34px, 6vw, 76px) clamp(20px, 5vw, 72px);
+    }
+
+    .intro {
+      position: sticky;
+      top: 28px;
+      min-width: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 760;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 20px rgba(24, 217, 155, 0.86);
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(3.25rem, 10vw, 8.4rem);
+      line-height: 0.86;
+      font-weight: 820;
+      letter-spacing: 0;
+    }
+
+    .lede {
+      max-width: 570px;
+      margin: 26px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.8vw, 1.22rem);
+      line-height: 1.5;
+    }
+
+    .mark {
+      width: min(270px, 54vw);
+      aspect-ratio: 1;
+      margin-top: 36px;
+      border-radius: 28%;
+      object-fit: cover;
+      box-shadow:
+        0 34px 100px rgba(0, 0, 0, 0.54),
+        0 0 76px rgba(24, 217, 155, 0.18),
+        0 0 98px rgba(255, 78, 125, 0.12);
+      transform: rotate(-2deg);
+    }
+
+    .terms-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 620px;
+      margin-top: 34px;
+    }
+
+    .term {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 13px;
+      min-height: 86px;
+    }
+
+    .term strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+
+    .term span {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.42);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-strong);
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 1.08rem;
+      font-weight: 760;
+    }
+
+    .status {
+      min-width: max-content;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 760;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    form {
+      display: grid;
+      gap: 18px;
+      padding: 22px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 720;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid rgba(248, 251, 246, 0.24);
+      border-radius: 7px;
+      background: rgba(0, 0, 0, 0.22);
+      color: var(--ink);
+      padding: 10px 11px;
+      font: inherit;
+      letter-spacing: 0;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 86px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(24, 217, 155, 0.76);
+      box-shadow: 0 0 0 3px rgba(24, 217, 155, 0.12);
+    }
+
+    .checks {
+      display: grid;
+      gap: 10px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    .check {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 11px;
+      align-items: start;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.35;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 520;
+    }
+
+    .check input {
+      width: 18px;
+      height: 18px;
+      min-height: 18px;
+      margin-top: 1px;
+      accent-color: var(--accent);
+    }
+
+    .button.primary {
+      border-color: rgba(24, 217, 155, 0.72);
+      background: rgba(24, 217, 155, 0.1);
+      color: var(--ink);
+      font-size: 0.82rem;
+      font-weight: 760;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .button.primary:disabled {
+      opacity: 0.52;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .locked {
+      display: none;
+      padding: 22px;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 78, 125, 0.08);
+    }
+
+    .locked[aria-hidden="false"] { display: block; }
+
+    .locked p,
+    .result p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .locked .button { margin-top: 16px; }
+
+    .result {
+      display: none;
+      padding: 22px;
+      border-top: 1px solid var(--line);
+      background: rgba(24, 217, 155, 0.08);
+    }
+
+    .result[aria-hidden="false"] { display: block; }
+
+    .result strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-size: 0.86rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .error {
+      display: none;
+      color: var(--bad);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .error[aria-hidden="false"] { display: block; }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px clamp(20px, 4vw, 52px);
+      border-top: 1px solid var(--line);
+      color: var(--quiet);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(5, 7, 6, 0.66);
+    }
+
+    @media (max-width: 980px) {
+      main { grid-template-columns: 1fr; }
+      .intro { position: static; }
+      .terms-strip { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        align-items: flex-start;
+        padding: 18px;
+      }
+      .brand span { display: none; }
+      .nav {
+        flex-direction: column;
+        align-items: flex-end;
+        white-space: normal;
+      }
+      main { padding: 30px 18px 42px; }
+      h1 { font-size: clamp(3rem, 17vw, 5.2rem); }
+      .field-grid { grid-template-columns: 1fr; }
+      .panel-head { display: grid; }
+      footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="/" aria-label="HIMBO EXPRESS home">
+        <img src="/himbo-assets/himbo-express-logo.png" alt="">
+        <span>HIMBO EXPRESS</span>
+      </a>
+      <nav class="nav" aria-label="access">
+        <span>Courier enrollment</span>
+        <a href="/login">RHINO ID</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="title">
+        <div class="eyebrow">Verified RHINO ID intake</div>
+        <h1 id="title">Ride the route.</h1>
+        <p class="lede">Become a HIMBO EXPRESS courier as an independent contractor. This lane is for owner-operators with a verified RHINO ID account, electric bike or e-scooter, background screening, and the required activation deposit.</p>
+        <img class="mark" src="/himbo-assets/himbo-express-logo.png" alt="HIMBO Express scooter delivery logo">
+        <div class="terms-strip" aria-label="courier economics">
+          <div class="term"><strong>Verified ID</strong><span>Photo ID, face scan, RHINO ID badge.</span></div>
+          <div class="term"><strong>$5 rider pay</strong><span>Per $10 Wilton Manors delivery.</span></div>
+          <div class="term"><strong>100% tips</strong><span>Tips go to the courier.</span></div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="form-title">
+        <div class="panel-head">
+          <h2 id="form-title">Courier application</h2>
+          <span class="status" id="rhino-status">Checking RHINO ID</span>
+        </div>
+        <form id="courier-form">
+          <div class="field-grid">
+            <label>
+              Legal name
+              <input name="legal_name" autocomplete="name" required>
+            </label>
+            <label>
+              Business name
+              <input name="business_name" autocomplete="organization" placeholder="Optional">
+            </label>
+            <label>
+              Phone
+              <input name="contact_phone" autocomplete="tel" required>
+            </label>
+            <label>
+              City
+              <input name="city" autocomplete="address-level2" value="Wilton Manors">
+            </label>
+            <label>
+              Vehicle
+              <select name="vehicle_type" required>
+                <option value="">Choose one</option>
+                <option value="electric_bike">Electric bike</option>
+                <option value="e_scooter">E-scooter</option>
+              </select>
+            </label>
+            <label>
+              Availability
+              <input name="availability" placeholder="Weeknights, weekends, mornings">
+            </label>
+          </div>
+          <label>
+            Courier experience
+            <textarea name="experience" placeholder="Delivery, privacy-sensitive handling, local route knowledge, or related operations."></textarea>
+          </label>
+
+          <div class="checks" aria-label="required acknowledgements">
+            <label class="check"><input type="checkbox" name="contractor_acknowledged" required><span>I am applying as an independent contractor, not as an employee.</span></label>
+            <label class="check"><input type="checkbox" name="owns_business_acknowledged" required><span>I own and operate my own courier business.</span></label>
+            <label class="check"><input type="checkbox" name="verified_rhino_id_acknowledged" required><span>I understand HIMBO Riders require a verified RHINO ID account with government-issued photo ID, face scan, profile badge, and RHINO ID wallet pass badge.</span></label>
+            <label class="check"><input type="checkbox" name="vehicle_acknowledged" required><span>I have access to an electric bike or e-scooter for courier work.</span></label>
+            <label class="check"><input type="checkbox" name="background_check_acknowledged" required><span>I understand a background check is required before activation.</span></label>
+            <label class="check"><input type="checkbox" name="deposit_acknowledged" required><span>I understand the $100 deposit is nonrefundable and activates the courier account after approval.</span></label>
+            <label class="check"><input type="checkbox" name="deposit_restore_acknowledged" required><span>I understand the deposit backs lost, stolen, or damaged delivery coverage and the account is disabled until the $100 deposit is restored if used.</span></label>
+            <label class="check"><input type="checkbox" name="payout_acknowledged" required><span>I understand each Wilton Manors delivery is $10, with $5 paid to the courier and $5 retained by HIMBO EXPRESS.</span></label>
+            <label class="check"><input type="checkbox" name="tips_acknowledged" required><span>I understand the courier receives 100% of tips.</span></label>
+            <label class="check"><input type="checkbox" name="privacy_acknowledged" required><span>I can follow privacy-sensitive courier handling standards required for this HIPAA courier lane.</span></label>
+          </div>
+
+          <p class="error" id="error" aria-hidden="true"></p>
+          <button class="button primary" id="submit" type="submit" disabled>Submit application</button>
+        </form>
+        <div class="locked" id="locked" aria-hidden="true">
+          <p>Courier enrollment requires a verified RHINO ID account. Sign in first, then RHINO ID will return you here with a gated session.</p>
+          <a class="button" href="https://id.2rhino.com/login?next=%2Flaunch%2Fhimbo-courier">Continue with RHINO ID</a>
+        </div>
+        <div class="result" id="result" aria-hidden="true">
+          <strong>Application received</strong>
+          <p id="result-copy">Your courier account is pending background check and the $100 nonrefundable activation deposit.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Wilton Manors courier lane</span>
+      <span>Independent contractor intake</span>
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      const form = document.getElementById("courier-form");
+      const status = document.getElementById("rhino-status");
+      const locked = document.getElementById("locked");
+      const result = document.getElementById("result");
+      const resultCopy = document.getElementById("result-copy");
+      const submit = document.getElementById("submit");
+      const error = document.getElementById("error");
+      const hash = new URLSearchParams(window.location.hash.slice(1));
+      const fragmentToken = hash.get("rhino_id_session");
+      const storedToken = window.sessionStorage.getItem("himbo_express.rhino_id_session");
+      const token = fragmentToken || storedToken || "";
+
+      if (fragmentToken) {
+        window.sessionStorage.setItem("himbo_express.rhino_id_session", fragmentToken);
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+
+      function setError(message) {
+        error.textContent = message || "";
+        error.setAttribute("aria-hidden", message ? "false" : "true");
+      }
+
+      function fieldValue(data, name) {
+        const value = data.get(name);
+        return typeof value === "string" ? value.trim() : "";
+      }
+
+      function checked(data, name) {
+        return data.get(name) === "on";
+      }
+
+      if (!token) {
+        status.textContent = "RHINO ID required";
+        locked.setAttribute("aria-hidden", "false");
+        form.querySelectorAll("input, select, textarea, button").forEach((node) => {
+          node.disabled = true;
+        });
+        return;
+      }
+
+      status.textContent = "RHINO ID ready";
+      submit.disabled = false;
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        setError("");
+        submit.disabled = true;
+        submit.textContent = "Submitting...";
+
+        const data = new FormData(form);
+        const body = {
+          rhino_id_session: token,
+          legal_name: fieldValue(data, "legal_name"),
+          business_name: fieldValue(data, "business_name"),
+          contact_phone: fieldValue(data, "contact_phone"),
+          city: fieldValue(data, "city"),
+          vehicle_type: fieldValue(data, "vehicle_type"),
+          availability: fieldValue(data, "availability"),
+          experience: fieldValue(data, "experience"),
+          contractor_acknowledged: checked(data, "contractor_acknowledged"),
+          owns_business_acknowledged: checked(data, "owns_business_acknowledged"),
+          verified_rhino_id_acknowledged: checked(data, "verified_rhino_id_acknowledged"),
+          vehicle_acknowledged: checked(data, "vehicle_acknowledged"),
+          background_check_acknowledged: checked(data, "background_check_acknowledged"),
+          deposit_acknowledged: checked(data, "deposit_acknowledged"),
+          deposit_restore_acknowledged: checked(data, "deposit_restore_acknowledged"),
+          payout_acknowledged: checked(data, "payout_acknowledged"),
+          tips_acknowledged: checked(data, "tips_acknowledged"),
+          privacy_acknowledged: checked(data, "privacy_acknowledged")
+        };
+
+        try {
+          const response = await fetch("/int/v1/couriers/enrollments", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            throw new Error(payload.error || "Courier enrollment failed.");
+          }
+          resultCopy.textContent = `Application ${payload.application_id} is pending background check and the $100 nonrefundable activation deposit.`;
+          result.setAttribute("aria-hidden", "false");
+          form.reset();
+          form.querySelectorAll("input, select, textarea, button").forEach((node) => {
+            node.disabled = true;
+          });
+          status.textContent = "Application received";
+        } catch (submissionError) {
+          submit.disabled = false;
+          submit.textContent = "Submit application";
+          setError(submissionError.message || "Courier enrollment failed.");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -42,6 +42,11 @@ services:
     image: fleetbase/fleetbase-api:latest
     command: ["go-crond", "--verbose", "root:./crontab"]
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "php", "artisan", "schedule:run", "--no-interaction"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
     environment:
       DATABASE_URL: "mysql://root@database/fleetbase"
       QUEUE_CONNECTION: redis

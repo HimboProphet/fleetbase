@@ -1,0 +1,35 @@
+services:
+  application:
+    image: himbo-express-api:local
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: app
+      args:
+        ENVIRONMENT: production
+    environment:
+      APP_NAME: HIMBO EXPRESS
+      CONSOLE_HOST: https://himbo.express/console
+      SESSION_DOMAIN: himbo.express
+
+  queue:
+    image: himbo-express-api:local
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: events
+      args:
+        ENVIRONMENT: production
+    environment:
+      APP_NAME: HIMBO EXPRESS
+
+  scheduler:
+    image: himbo-express-api:local
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: scheduler
+      args:
+        ENVIRONMENT: production
+    environment:
+      APP_NAME: HIMBO EXPRESS

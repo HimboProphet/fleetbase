@@ -1,0 +1,116 @@
+{{page-title "Permissions Matrix"}}
+<Layout::Section::Header @title="Permissions Matrix" />
+
+<Layout::Section::Body class="overflow-y-scroll h-full">
+    <div class="container mx-auto h-screen">
+        <div class="max-w-6xl my-8 mx-auto space-y-6">
+            <div class="grid grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-4">
+                <div class="rounded-md border border-gray-800 bg-gray-900 p-4">
+                    <div class="text-xs uppercase text-gray-500 tracking-wide">Access Rule</div>
+                    <div class="mt-2 text-lg font-semibold text-white">{{@model.summary.allowlist_mode}}</div>
+                    <div class="mt-1 text-sm text-gray-400">{{@model.summary.status}}</div>
+                </div>
+                <div class="rounded-md border border-gray-800 bg-gray-900 p-4">
+                    <div class="text-xs uppercase text-gray-500 tracking-wide">Dispatch User</div>
+                    <div class="mt-2 text-lg font-semibold text-white">{{@model.summary.dispatch_user_email}}</div>
+                    <div class="mt-1 text-sm text-gray-400">{{@model.dispatch_user.status}}</div>
+                </div>
+                <div class="rounded-md border border-gray-800 bg-gray-900 p-4">
+                    <div class="text-xs uppercase text-gray-500 tracking-wide">Local Password</div>
+                    <div class="mt-2 text-lg font-semibold text-white">{{@model.summary.local_password_access}}</div>
+                    <div class="mt-1 text-sm text-gray-400">RHINO ID handoff only</div>
+                </div>
+                <div class="rounded-md border border-gray-800 bg-gray-900 p-4">
+                    <div class="text-xs uppercase text-gray-500 tracking-wide">Generated</div>
+                    <div class="mt-2 text-lg font-semibold text-white">{{@model.generated_at}}</div>
+                    <div class="mt-1 text-sm text-gray-400">{{@model.summary.entry}}</div>
+                </div>
+                <div class="rounded-md border border-gray-800 bg-gray-900 p-4">
+                    <div class="text-xs uppercase text-gray-500 tracking-wide">Exact Email Required</div>
+                    <div class="mt-2 text-lg font-semibold text-white">{{@model.summary.exact_email_required}}</div>
+                    <div class="mt-1 text-sm text-gray-400">No domain-only public expansion</div>
+                </div>
+                <div class="rounded-md border border-gray-800 bg-gray-900 p-4">
+                    <div class="text-xs uppercase text-gray-500 tracking-wide">Token TTL</div>
+                    <div class="mt-2 text-lg font-semibold text-white">{{@model.summary.token_ttl_minutes}} minutes</div>
+                    <div class="mt-1 text-sm text-gray-400">RHINO ID handoff token</div>
+                </div>
+            </div>
+
+            <div class="rounded-md border border-gray-800 bg-gray-900 overflow-hidden">
+                <div class="px-4 py-3 border-b border-gray-800">
+                    <h2 class="text-base font-semibold text-white">Principals</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-950 text-xs uppercase text-gray-500">
+                            <tr>
+                                <th class="px-4 py-3">Principal</th>
+                                <th class="px-4 py-3">Credential</th>
+                                <th class="px-4 py-3">Lounge</th>
+                                <th class="px-4 py-3">Launch</th>
+                                <th class="px-4 py-3">Exchange</th>
+                                <th class="px-4 py-3">Console</th>
+                                <th class="px-4 py-3">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 text-gray-300">
+                            {{#each @model.principals as |principal|}}
+                                <tr>
+                                    <td class="px-4 py-3">
+                                        <div class="font-medium text-white">{{principal.name}}</div>
+                                        <div class="text-xs text-gray-500">{{principal.identity}}</div>
+                                    </td>
+                                    <td class="px-4 py-3">{{principal.credential}}</td>
+                                    <td class="px-4 py-3">{{principal.lounge_tile}}</td>
+                                    <td class="px-4 py-3">{{principal.launch}}</td>
+                                    <td class="px-4 py-3">{{principal.exchange}}</td>
+                                    <td class="px-4 py-3">{{principal.console}}</td>
+                                    <td class="px-4 py-3 text-gray-400">{{principal.notes}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="rounded-md border border-gray-800 bg-gray-900 overflow-hidden">
+                <div class="px-4 py-3 border-b border-gray-800">
+                    <h2 class="text-base font-semibold text-white">Capabilities</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-950 text-xs uppercase text-gray-500">
+                            <tr>
+                                <th class="px-4 py-3">Capability</th>
+                                <th class="px-4 py-3">Owner</th>
+                                <th class="px-4 py-3">Enforcement</th>
+                                <th class="px-4 py-3">State</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 text-gray-300">
+                            {{#each @model.capabilities as |capability|}}
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-white">{{capability.capability}}</td>
+                                    <td class="px-4 py-3">{{capability.owner}}</td>
+                                    <td class="px-4 py-3">{{capability.enforcement}}</td>
+                                    <td class="px-4 py-3">{{capability.state}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="rounded-md border border-gray-800 bg-gray-900 p-4">
+                <h2 class="text-base font-semibold text-white">Allowed Operators</h2>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    {{#each @model.summary.allowed_operators as |operator|}}
+                        <span class="rounded border border-gray-700 px-2 py-1 text-sm text-gray-300">{{operator}}</span>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <Spacer @height="300px" />
+</Layout::Section::Body>

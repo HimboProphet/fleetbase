@@ -12,8 +12,10 @@ Router.map(function () {
     this.route('onboard', function () {
         this.route('index', { path: '/' });
     });
+    this.route('dispatch-rhino-id', { path: '/dispatch/rhino-id' });
     this.route('auth', function () {
         this.route('login', { path: '/' });
+        this.route('rhino-id');
         this.route('forgot-password');
         this.route('reset-password', { path: '/reset-password/:id' });
         this.route('two-fa');
@@ -51,6 +53,7 @@ Router.map(function () {
             });
             this.route('branding');
             this.route('two-fa-settings');
+            this.route('permissions-matrix');
             this.route('virtual', { path: '/:slug' });
             this.route('organizations', function () {
                 this.route('index', { path: '/' }, function () {
