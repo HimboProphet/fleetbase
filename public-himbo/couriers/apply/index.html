@@ -37,10 +37,7 @@
       min-height: 100svh;
       margin: 0;
       color: var(--ink);
-      background:
-        radial-gradient(circle at 78% 16%, rgba(24, 217, 155, 0.16), transparent 24rem),
-        radial-gradient(circle at 15% 36%, rgba(255, 78, 125, 0.12), transparent 24rem),
-        #050706;
+      background: #050706;
     }
 
     a { color: inherit; }
@@ -149,9 +146,9 @@
     h1 {
       max-width: 760px;
       margin: 0;
-      font-size: clamp(3.25rem, 10vw, 8.4rem);
-      line-height: 0.86;
-      font-weight: 820;
+      font-size: clamp(2.8rem, 6vw, 5.4rem);
+      line-height: 0.94;
+      font-weight: 760;
       letter-spacing: 0;
     }
 
@@ -178,7 +175,7 @@
 
     .terms-strip {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
       max-width: 620px;
       margin-top: 34px;
@@ -408,7 +405,7 @@
         white-space: normal;
       }
       main { padding: 30px 18px 42px; }
-      h1 { font-size: clamp(3rem, 17vw, 5.2rem); }
+      h1 { font-size: clamp(2.65rem, 14vw, 4.4rem); }
       .field-grid { grid-template-columns: 1fr; }
       .panel-head { display: grid; }
       footer { flex-direction: column; }
@@ -432,12 +429,13 @@
       <section class="intro" aria-labelledby="title">
         <div class="eyebrow">Verified RHINO ID intake</div>
         <h1 id="title">Ride the route.</h1>
-        <p class="lede">Become a HIMBO EXPRESS courier as an independent contractor. This lane is for owner-operators with a verified RHINO ID account, electric bike or e-scooter, background screening, and the required activation deposit.</p>
+        <p class="lede">Become a HIMBO EXPRESS Rider as an independent contractor. This lane is for owner-operators with a verified RHINO ID account, electric bike or e-scooter, clear background screen, proper liability coverage, and a refundable protection reserve collected only after approval.</p>
         <img class="mark" src="/himbo-assets/himbo-express-logo.png" alt="HIMBO Express scooter delivery logo">
         <div class="terms-strip" aria-label="courier economics">
           <div class="term"><strong>Verified ID</strong><span>Photo ID, face scan, RHINO ID badge.</span></div>
           <div class="term"><strong>$5 rider pay</strong><span>Per $10 Wilton Manors delivery.</span></div>
           <div class="term"><strong>100% tips</strong><span>Tips go to the courier.</span></div>
+          <div class="term"><strong>Rider benefit</strong><span>10% off the HIMBO Express line on HIMBO.CLOUD + free shipping.</span></div>
         </div>
       </section>
 
@@ -487,9 +485,10 @@
             <label class="check"><input type="checkbox" name="owns_business_acknowledged" required><span>I own and operate my own courier business.</span></label>
             <label class="check"><input type="checkbox" name="verified_rhino_id_acknowledged" required><span>I understand HIMBO Riders require a verified RHINO ID account with government-issued photo ID, face scan, profile badge, and RHINO ID wallet pass badge.</span></label>
             <label class="check"><input type="checkbox" name="vehicle_acknowledged" required><span>I have access to an electric bike or e-scooter for courier work.</span></label>
+            <label class="check"><input type="checkbox" name="insurance_acknowledged" required><span>I will maintain the liability and delivery-use insurance required for my vehicle and courier work, and provide proof before activation.</span></label>
             <label class="check"><input type="checkbox" name="background_check_acknowledged" required><span>I understand a background check is required before activation.</span></label>
-            <label class="check"><input type="checkbox" name="deposit_acknowledged" required><span>I understand the $100 deposit is nonrefundable and activates the courier account after approval.</span></label>
-            <label class="check"><input type="checkbox" name="deposit_restore_acknowledged" required><span>I understand the deposit backs lost, stolen, or damaged delivery coverage and the account is disabled until the $100 deposit is restored if used.</span></label>
+            <label class="check"><input type="checkbox" name="protection_reserve_acknowledged" required><span>I understand the $100 Courier Protection Reserve is collected after approval, is not an activation fee, and is refundable after my account closes and documented delivery claims are resolved.</span></label>
+            <label class="check"><input type="checkbox" name="protection_reserve_restore_acknowledged" required><span>I understand the reserve may be applied only to a documented lost, stolen, or damaged delivery claim while under my care, with notice and an appeal path, and must be restored before new routes if used.</span></label>
             <label class="check"><input type="checkbox" name="payout_acknowledged" required><span>I understand each Wilton Manors delivery is $10, with $5 paid to the courier and $5 retained by HIMBO EXPRESS.</span></label>
             <label class="check"><input type="checkbox" name="tips_acknowledged" required><span>I understand the courier receives 100% of tips.</span></label>
             <label class="check"><input type="checkbox" name="privacy_acknowledged" required><span>I can follow privacy-sensitive courier handling standards required for this HIPAA courier lane.</span></label>
@@ -504,7 +503,7 @@
         </div>
         <div class="result" id="result" aria-hidden="true">
           <strong>Application received</strong>
-          <p id="result-copy">Your courier account is pending background check and the $100 nonrefundable activation deposit.</p>
+          <p id="result-copy">Your application is pending final activation review. The refundable $100 Courier Protection Reserve is collected only after approval.</p>
         </div>
       </section>
     </main>
@@ -580,9 +579,10 @@
           owns_business_acknowledged: checked(data, "owns_business_acknowledged"),
           verified_rhino_id_acknowledged: checked(data, "verified_rhino_id_acknowledged"),
           vehicle_acknowledged: checked(data, "vehicle_acknowledged"),
+          insurance_acknowledged: checked(data, "insurance_acknowledged"),
           background_check_acknowledged: checked(data, "background_check_acknowledged"),
-          deposit_acknowledged: checked(data, "deposit_acknowledged"),
-          deposit_restore_acknowledged: checked(data, "deposit_restore_acknowledged"),
+          protection_reserve_acknowledged: checked(data, "protection_reserve_acknowledged"),
+          protection_reserve_restore_acknowledged: checked(data, "protection_reserve_restore_acknowledged"),
           payout_acknowledged: checked(data, "payout_acknowledged"),
           tips_acknowledged: checked(data, "tips_acknowledged"),
           privacy_acknowledged: checked(data, "privacy_acknowledged")
@@ -601,7 +601,7 @@
           if (!response.ok) {
             throw new Error(payload.error || "Courier enrollment failed.");
           }
-          resultCopy.textContent = `Application ${payload.application_id} is pending background check and the $100 nonrefundable activation deposit.`;
+          resultCopy.textContent = `Application ${payload.application_id} is pending activation review. The refundable $100 Courier Protection Reserve is collected only after approval.`;
           result.setAttribute("aria-hidden", "false");
           form.reset();
           form.querySelectorAll("input, select, textarea, button").forEach((node) => {

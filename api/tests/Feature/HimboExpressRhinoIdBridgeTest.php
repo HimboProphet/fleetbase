@@ -119,25 +119,32 @@ class HimboExpressRhinoIdBridgeTest extends TestCase
             'owns_business_acknowledged' => true,
             'verified_rhino_id_acknowledged' => true,
             'vehicle_acknowledged' => true,
+            'insurance_acknowledged' => true,
             'background_check_acknowledged' => true,
-            'deposit_acknowledged' => true,
-            'deposit_restore_acknowledged' => true,
+            'protection_reserve_acknowledged' => true,
+            'protection_reserve_restore_acknowledged' => true,
             'payout_acknowledged' => true,
             'tips_acknowledged' => true,
             'privacy_acknowledged' => true,
         ]);
 
         $response->assertStatus(202)
-            ->assertJsonPath('status', 'pending_background_check_and_deposit')
+            ->assertJsonPath('status', 'pending_activation_requirements')
             ->assertJsonPath('delivery_economics.delivery_price_usd', 10)
             ->assertJsonPath('delivery_economics.courier_payout_usd', 5)
-            ->assertJsonPath('delivery_economics.tips_to_courier_percent', 100);
+            ->assertJsonPath('delivery_economics.tips_to_courier_percent', 100)
+            ->assertJsonPath('activation_pricing.activation_markup_usd', 0)
+            ->assertJsonPath('protection_reserve_policy.refundable', true)
+            ->assertJsonPath('rider_benefit.himbo_cloud_discount_percent', 10)
+            ->assertJsonPath('rider_benefit.himbo_cloud_free_shipping', true);
 
         Storage::disk('local')->assertExists('himbo-express/courier-enrollments.jsonl');
         $stored = Storage::disk('local')->get('himbo-express/courier-enrollments.jsonl');
         $this->assertStringContainsString('"email":"courier@example.com"', $stored);
         $this->assertStringContainsString('"wallet_pass_badge":"Verified RHINO ID"', $stored);
-        $this->assertStringContainsString('"deposit":"required_nonrefundable_100_usd"', $stored);
+        $this->assertStringContainsString('"protection_reserve":"required_refundable_100_usd_after_approval"', $stored);
+        $this->assertStringContainsString('"liability_insurance":"proof_required_before_activation"', $stored);
+        $this->assertStringContainsString('"entitlement":"himbo_express_active_rider"', $stored);
     }
 
     private function verifiedRhinoIdUser(): array
@@ -146,7 +153,8 @@ class HimboExpressRhinoIdBridgeTest extends TestCase
             'id' => 'rid_123',
             'email' => 'courier@example.com',
             'identity_verification_status' => 'verified',
-            'identity_verification_method' => 'government_photo_id_face_scan_background_check',
+            'identity_verification_method' => 'government_photo_id_face_scan',
+            'background_check_status' => 'clear',
             'verified_badge' => true,
             'wallet_pass_badge' => 'Verified RHINO ID',
         ];

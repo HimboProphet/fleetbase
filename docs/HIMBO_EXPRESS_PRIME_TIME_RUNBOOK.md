@@ -41,15 +41,19 @@ Courier enrollment facts:
 - Verified status appears as a profile badge and as `Verified RHINO ID` on the RHINO ID wallet pass.
 - Required vehicle: electric bike or e-scooter.
 - Background check is required before account activation.
-- The $100 activation deposit is nonrefundable.
-- The deposit backs lost, stolen, or damaged delivery coverage up to $100.
-- If the deposit is used for a delivery claim while under courier care, the courier account is disabled until the $100 deposit is restored.
+- Verification and background-screening provider charges are passed through to the Rider at actual cost with zero HIMBO/RHINO activation markup.
+- A $100 refundable Courier Protection Reserve is collected only after Rider approval; it is not an activation fee or revenue.
+- The reserve backs documented lost, stolen, or damaged delivery claims up to $100. Notice and an appeal path are required before applying it.
+- After account closure, the unused reserve is returned after documented claims are resolved. If a claim uses the reserve, new routes pause until it is restored.
+- Proof of appropriate liability and delivery-use insurance is required before activation. Final coverage wording and minimum limits remain a legal/broker release gate.
+- Active Riders receive a RHINO ID-bound benefit: 10% off the HIMBO Express line on HIMBO.CLOUD plus free shipping.
+- The Rider benefit must fail closed when active entitlement cannot be verified and must end when Rider status is deactivated.
 - Wilton Manors delivery price is $10.
 - Courier receives $5 per Wilton Manors delivery.
 - HIMBO EXPRESS retains $5 per Wilton Manors delivery.
 - Courier receives 100% of tips.
 
-Release note: public wording for the HIPAA courier lane, verified identity vendor flow, background check vendor flow, deposit collection, contractor agreement, insurance language, and tax/payment handling requires legal/compliance review before live public recruitment.
+Release note: public wording for the HIPAA courier lane, verified identity vendor flow, background check vendor flow, reserve collection/refund/claim handling, contractor agreement, insurance language, benefit terms, and tax/payment handling requires legal/compliance review before live public recruitment.
 
 ## Gate 1: Source Control And Tests
 
@@ -131,10 +135,10 @@ Required before public launch:
 - Order intake flow is defined.
 - Pricing/quote rules are defined.
 - Payment, refund, and cancellation paths are defined.
-- Deposit collection and restoration paths are defined and tested.
+- Protection-reserve collection, claim, appeal, restoration, and refund paths are defined and tested.
 - Customer notification channels are defined and tested.
 - Courier/operator onboarding and role boundaries are defined.
-- Courier contractor agreement, background check consent, deposit acknowledgement, insurance wording, and payout terms are reviewed.
+- Courier contractor agreement, background check consent, protection-reserve acknowledgement, insurance wording, Rider-benefit terms, and payout terms are reviewed.
 - Support escalation and incident response are defined.
 - Terms, privacy, and courier-specific risk disclosures are reviewed before public customer traffic.
 

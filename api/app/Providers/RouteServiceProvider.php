@@ -68,11 +68,15 @@ class RouteServiceProvider extends ServiceProvider
                     }
                 )->middleware(['throttle:himbo-rhino-id-exchange']);
 
-                Route::middleware(['auth:sanctum'])->get(
+                Route::get(
                     '/int/v1/auth/rhino-id/permissions-matrix',
                     function (Request $request) {
-                        $user = $request->user();
-                        if (!$user || !data_get($user, 'is_admin')) {
+                        $user = $request->user('sanctum') ?: $request->user();
+                        if (!$user) {
+                            return response()->json(['error' => 'unauthenticated'], 401);
+                        }
+
+                        if (!data_get($user, 'is_admin')) {
                             return response()->json(['error' => 'admin_required'], 403);
                         }
 
@@ -420,7 +424,7 @@ HTML
                 [
                     'capability' => 'View admin permissions matrix',
                     'owner' => 'Fleetbase Admin',
-                    'enforcement' => 'auth:sanctum + is_admin',
+                    'enforcement' => 'sanctum user + is_admin',
                     'state' => 'admin_only',
                 ],
                 [
@@ -490,21 +494,41 @@ HTML
         $enrollment = [
             'application_id' => $applicationId,
             'submitted_at' => now()->toIso8601String(),
-            'status' => 'pending_deposit',
+            'status' => 'pending_activation_requirements',
             'account_status' => 'pending_activation',
             'activation_requirements' => [
                 'background_check' => 'verified_clear',
                 'rhino_id_verification' => 'verified_government_photo_id_and_face_scan',
-                'deposit' => 'required_nonrefundable_100_usd',
+                'provider_costs' => 'rider_paid_at_cost_no_markup',
+                'protection_reserve' => 'required_refundable_100_usd_after_approval',
+                'liability_insurance' => 'proof_required_before_activation',
                 'vehicle' => 'electric_bike_or_e_scooter',
                 'privacy_handling' => 'required',
             ],
-            'deposit_policy' => [
+            'activation_pricing' => [
+                'billing_model' => 'actual_provider_cost_at_cost',
+                'activation_markup_usd' => 0,
+                'payer' => 'rider',
+                'protection_reserve_is_revenue' => false,
+            ],
+            'protection_reserve_policy' => [
                 'amount_usd' => 100,
-                'refundable' => false,
+                'collected_after_approval' => true,
+                'refundable' => true,
+                'refund_timing' => 'after_account_closure_and_documented_claim_resolution',
                 'purpose' => 'backs lost, stolen, or damaged delivery coverage',
                 'coverage_usd' => 100,
+                'claim_requires_documentation' => true,
+                'claim_notice_and_appeal_required' => true,
                 'restore_required_after_claim' => true,
+            ],
+            'rider_benefit' => [
+                'entitlement' => 'himbo_express_active_rider',
+                'status' => 'pending_activation',
+                'scope' => 'himbo_express_line',
+                'himbo_cloud_discount_percent' => 10,
+                'himbo_cloud_free_shipping' => true,
+                'redemption' => 'rhino_id_entitlement_required',
             ],
             'delivery_economics' => [
                 'service_area' => 'Wilton Manors',
@@ -540,8 +564,9 @@ HTML
                 'government_photo_id' => true,
                 'face_scan' => true,
                 'background_check' => true,
-                'deposit_nonrefundable' => true,
-                'deposit_restore_after_claim' => true,
+                'liability_insurance' => true,
+                'protection_reserve_refundable' => true,
+                'protection_reserve_restore_after_claim' => true,
                 'payout_split' => true,
                 'tips' => true,
                 'privacy_handling' => true,
@@ -564,15 +589,19 @@ HTML
         return response()->json(
             [
                 'application_id' => $applicationId,
-                'status' => 'pending_deposit',
+                'status' => 'pending_activation_requirements',
                 'account_status' => 'pending_activation',
                 'next_steps' => [
                     'background_check_verified',
                     'verified_rhino_id_required',
-                    'nonrefundable_100_usd_deposit_required_before_activation',
-                    'courier_account_disabled_if_delivery_claim_uses_deposit_until_restored',
+                    'liability_insurance_proof_required_before_activation',
+                    'refundable_100_usd_protection_reserve_collected_after_approval',
+                    'new_routes_paused_if_documented_claim_uses_reserve_until_restored',
                 ],
                 'delivery_economics' => data_get($enrollment, 'delivery_economics'),
+                'activation_pricing' => data_get($enrollment, 'activation_pricing'),
+                'protection_reserve_policy' => data_get($enrollment, 'protection_reserve_policy'),
+                'rider_benefit' => data_get($enrollment, 'rider_benefit'),
             ],
             202
         )->header('Cache-Control', 'no-store');
@@ -636,9 +665,10 @@ HTML
             'owns_business_acknowledged',
             'verified_rhino_id_acknowledged',
             'vehicle_acknowledged',
+            'insurance_acknowledged',
             'background_check_acknowledged',
-            'deposit_acknowledged',
-            'deposit_restore_acknowledged',
+            'protection_reserve_acknowledged',
+            'protection_reserve_restore_acknowledged',
             'payout_acknowledged',
             'tips_acknowledged',
             'privacy_acknowledged',
