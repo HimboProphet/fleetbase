@@ -107,10 +107,14 @@ sudo tee /etc/nginx/sites-enabled/himbo.express.conf >/dev/null <<'NGINX'
 server {
   listen 80;
   listen [::]:80;
-  listen 443 ssl http2;
-  listen [::]:443 ssl http2;
-  ssl_certificate /etc/nginx/ssl-certificates/himbo.express.crt;
+  listen 443 quic;
+  listen 443 ssl;
+  listen [::]:443 quic;
+  listen [::]:443 ssl;
+  http2 on;
+  http3 off;
   ssl_certificate_key /etc/nginx/ssl-certificates/himbo.express.key;
+  ssl_certificate /etc/nginx/ssl-certificates/himbo.express.crt;
   server_name www.himbo.express;
   return 301 https://himbo.express$request_uri;
 }
@@ -118,11 +122,18 @@ server {
 server {
   listen 80;
   listen [::]:80;
-  listen 443 ssl http2;
-  listen [::]:443 ssl http2;
-  ssl_certificate /etc/nginx/ssl-certificates/himbo.express.crt;
+  listen 443 quic;
+  listen 443 ssl;
+  listen [::]:443 quic;
+  listen [::]:443 ssl;
+  http2 on;
+  http3 off;
   ssl_certificate_key /etc/nginx/ssl-certificates/himbo.express.key;
-  server_name himbo.express;
+  ssl_certificate /etc/nginx/ssl-certificates/himbo.express.crt;
+  server_name himbo.express www1.himbo.express;
+
+  access_log /home/wehimboexpress/logs/nginx/access.log main;
+  error_log /home/wehimboexpress/logs/nginx/error.log;
 
   include /etc/nginx/global_settings;
 
@@ -208,7 +219,9 @@ server {
 }
 NGINX
 
-sudo cp /etc/nginx/sites-enabled/himbo.express.conf /etc/nginx/sites-available/himbo.express.conf
+if [ -d /etc/nginx/sites-available ]; then
+  sudo cp /etc/nginx/sites-enabled/himbo.express.conf /etc/nginx/sites-available/himbo.express.conf
+fi
 sudo nginx -t
 sudo systemctl reload nginx
 REMOTE

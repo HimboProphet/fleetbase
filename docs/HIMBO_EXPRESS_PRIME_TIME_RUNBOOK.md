@@ -1,6 +1,6 @@
 # HIMBO EXPRESS Prime-Time Runbook
 
-Status: MVP private dispatch lane promoted 2026-06-28.
+Status: MVP private dispatch lane promoted 2026-06-28; insulated public shell and courier intake deployed 2026-07-27.
 
 Product decision, 2026-06-29: Fleetbase is the operational backbone for HIMBO EXPRESS, and HIMBO EXPRESS is expected to be at least partly public-facing. Treat Fleetbase licensing/compliance as a release gate before external users or customers interact with the modified Fleetbase-backed service.
 
@@ -23,7 +23,7 @@ This document defines the release gates before HIMBO EXPRESS can move from the p
 
 ## Courier Enrollment Mode
 
-Implemented 2026-07-10 as an insulated public HIMBO Express surface, not a Fleetbase console path.
+Implemented 2026-07-10 as an insulated public HIMBO Express surface, not a Fleetbase console path. Deployed to WORLDENGINE on 2026-07-27: `https://himbo.express/` serves the HIMBO public shell, `https://himbo.express/couriers/apply/` serves the courier intake page, `/login` redirects through RHINO ID, `/auth/rhino-id/health` returns healthy Fleetbase bridge JSON, and `/ops` redirects to `/console`.
 
 - Candidate entry: `https://himbo.express/couriers/apply`
 - RHINO ID handoff: `https://id.2rhino.com/login?next=%2Flaunch%2Fhimbo-courier`
@@ -54,6 +54,8 @@ Courier enrollment facts:
 - Courier receives 100% of tips.
 
 Release note: public wording for the HIPAA courier lane, verified identity vendor flow, background check vendor flow, reserve collection/refund/claim handling, contractor agreement, insurance language, benefit terms, and tax/payment handling requires legal/compliance review before live public recruitment.
+
+Deployment note, 2026-07-27: `/opt/himbo-express/secrets/app.env` now contains `HIMBO_MYSQL_ROOT_PASSWORD` and `HIMBO_OSRM_HOST` for the hardened compose contract. The OSRM value was preserved from the previously running service and still points at the public OSRM demo, so a real production routing service remains a prime-time blocker. Backups: `/root/2rhino-backups/himbo-express-app-env-pre-contract-20260727T170524Z.env` and `/root/2rhino-backups/himbo-express-nginx-pre-public-shell-20260727T170655Z.conf`.
 
 ## Gate 1: Source Control And Tests
 
