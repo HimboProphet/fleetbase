@@ -1,6 +1,6 @@
 # HIMBO EXPRESS Prime-Time Runbook
 
-Status: MVP private dispatch lane promoted 2026-06-28; insulated public shell and courier intake deployed 2026-07-27.
+Status: MVP private dispatch lane promoted 2026-06-28; insulated public shell and courier intake deployed 2026-07-27; self-hosted routing deployed 2026-07-28.
 
 Product decision, 2026-06-29: Fleetbase is the operational backbone for HIMBO EXPRESS, and HIMBO EXPRESS is expected to be at least partly public-facing. Treat Fleetbase licensing/compliance as a release gate before external users or customers interact with the modified Fleetbase-backed service.
 
@@ -55,9 +55,9 @@ Courier enrollment facts:
 
 Release note: public wording for the HIPAA courier lane, verified identity vendor flow, background check vendor flow, reserve collection/refund/claim handling, contractor agreement, insurance language, benefit terms, and tax/payment handling requires legal/compliance review before live public recruitment.
 
-Deployment note, 2026-07-27: `/opt/himbo-express/secrets/app.env` now contains `HIMBO_MYSQL_ROOT_PASSWORD` and `HIMBO_OSRM_HOST` for the hardened compose contract. The OSRM value was preserved from the previously running service and still points at the public OSRM demo, so a real production routing service remains a prime-time blocker. Backups: `/root/2rhino-backups/himbo-express-app-env-pre-contract-20260727T170524Z.env` and `/root/2rhino-backups/himbo-express-nginx-pre-public-shell-20260727T170655Z.conf`.
+Deployment note, 2026-07-27: `/opt/himbo-express/secrets/app.env` now contains `HIMBO_MYSQL_ROOT_PASSWORD` and `HIMBO_OSRM_HOST` for the hardened compose contract. The first public-shell deployment preserved the previously running public OSRM demo value. Backups: `/root/2rhino-backups/himbo-express-app-env-pre-contract-20260727T170524Z.env` and `/root/2rhino-backups/himbo-express-nginx-pre-public-shell-20260727T170655Z.conf`.
 
-Routing preparation note, 2026-07-28: the production compose file now has a disabled-by-default `routing` service using `osrm/osrm-backend:v5.25.0`. Prepare the Florida driving graph with `scripts/himbo-express-prepare-osrm.sh`, then switch `/opt/himbo-express/secrets/app.env` to `HIMBO_OSRM_HOST=http://routing:5000` and deploy. The deploy script fails closed if the self-hosted URL is selected before `/opt/himbo-express/routing/himbo-florida.osrm` exists.
+Routing deployment note, 2026-07-28: HIMBO Express now uses a private self-hosted OSRM service instead of the public demo. The production compose file has a `routing` service using `osrm/osrm-backend:v5.25.0`; `/opt/himbo-express/routing/himbo-florida.osrm*` was prepared from Geofabrik `florida-latest.osm.pbf`; `/opt/himbo-express/secrets/app.env` is set to `HIMBO_OSRM_HOST=http://routing:5000`; and the application container was recreated with that env. Live proof: `current-routing-1` is up with no host port exposure, `current-application-1` env reports self-hosted routing, and an internal Wilton Manors route returned OSRM `code:"Ok"`. Backups: `/root/2rhino-backups/himbo-express-app-env-pre-selfhosted-osrm-20260728T150446Z.env`, `/root/2rhino-backups/himbo-express-pre-dispatch-20260728T150454Z.tar.gz`, `/root/2rhino-backups/himbo-express-pre-dispatch-20260728T150519Z.tar.gz`, and `/root/2rhino-backups/himbo-express-pre-dispatch-20260728T150631Z.tar.gz`.
 
 ## Gate 1: Source Control And Tests
 
@@ -92,7 +92,7 @@ Preferred current lane: isolation. Fleetbase remains the internal operations bac
 Required before expansion:
 
 - `HIMBO_MYSQL_ROOT_PASSWORD` is set in `/opt/himbo-express/secrets/app.env`.
-- `HIMBO_OSRM_HOST` points to a production routing service, not the public OSRM demo. Preferred current path is the self-hosted compose service at `http://routing:5000` after `scripts/himbo-express-prepare-osrm.sh` prepares `/opt/himbo-express/routing/himbo-florida.osrm`.
+- `HIMBO_OSRM_HOST` points to the private self-hosted compose service at `http://routing:5000`, backed by `/opt/himbo-express/routing/himbo-florida.osrm`.
 - `HIMBO_MAIL_MAILER` is set to a real transactional mailer before customer/operator notifications depend on email.
 - `RHINO_ID_REQUIRE_EXACT_EMAILS=true` remains set unless Travis explicitly approves domain-level expansion.
 - `RHINO_ID_FLEETBASE_TOKEN_TTL_MINUTES` remains bounded.
