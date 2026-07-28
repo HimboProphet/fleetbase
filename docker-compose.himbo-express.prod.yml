@@ -35,6 +35,18 @@ services:
       SOCKETCLUSTER_BROKERS: 2
       SOCKETCLUSTER_OPTIONS: '{"origins":"https://himbo.express:*"}'
 
+  routing:
+    image: osrm/osrm-backend:v5.27.1
+    platform: linux/amd64
+    restart: unless-stopped
+    profiles:
+      - self-hosted-routing
+    command: ["osrm-routed", "--algorithm", "mld", "/data/himbo-florida.osrm"]
+    volumes:
+      - /opt/himbo-express/routing:/data:ro
+    ports:
+      - "127.0.0.1:15000:5000"
+
   application:
     image: himbo-express-api:prod
     build:

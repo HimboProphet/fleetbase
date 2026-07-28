@@ -74,6 +74,18 @@ fi
 compose=(sudo docker compose --env-file "$REMOTE_SECRETS_DIR/app.env" -f "$COMPOSE_FILE")
 mysql_root_password="$(sudo sed -n 's/^HIMBO_MYSQL_ROOT_PASSWORD=//p' "$REMOTE_SECRETS_DIR/app.env" | tail -n 1)"
 mysql_root_password_sql="${mysql_root_password//\'/\'\'}"
+osrm_host="$(sudo sed -n 's/^HIMBO_OSRM_HOST=//p' "$REMOTE_SECRETS_DIR/app.env" | tail -n 1)"
+self_hosted_routing=0
+
+if [ "$osrm_host" = "http://routing:5000" ]; then
+  self_hosted_routing=1
+  compose=(sudo docker compose --profile self-hosted-routing --env-file "$REMOTE_SECRETS_DIR/app.env" -f "$COMPOSE_FILE")
+  if [ ! -s /opt/himbo-express/routing/himbo-florida.osrm ]; then
+    echo "HIMBO_OSRM_HOST is set to self-hosted routing, but /opt/himbo-express/routing/himbo-florida.osrm is missing." >&2
+    echo "Run scripts/himbo-express-prepare-osrm.sh before deploying the self-hosted routing lane." >&2
+    exit 2
+  fi
+fi
 
 stamp="$(date -u +%Y%m%dT%H%M%SZ)"
 sudo mkdir -p "$REMOTE_BACKUP_DIR"
@@ -83,6 +95,9 @@ sudo tar -czf "$REMOTE_BACKUP_DIR/himbo-express-pre-dispatch-$stamp.tar.gz" \
   /etc/nginx/sites-available/himbo.express.conf 2>/dev/null || true
 
 cd "$REMOTE_ROOT"
+if [ "$self_hosted_routing" -eq 1 ]; then
+  "${compose[@]}" up -d routing
+fi
 "${compose[@]}" up -d --build database cache socket
 if "${compose[@]}" exec -T database mysql -uroot -e "SELECT 1" >/dev/null 2>&1; then
   "${compose[@]}" exec -T database mysql -uroot -e "ALTER USER 'root'@'%' IDENTIFIED BY '$mysql_root_password_sql'; ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysql_root_password_sql'; FLUSH PRIVILEGES;" || true
