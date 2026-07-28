@@ -102,7 +102,7 @@ fi
 if "${compose[@]}" exec -T database mysql -uroot -e "SELECT 1" >/dev/null 2>&1; then
   "${compose[@]}" exec -T database mysql -uroot -e "ALTER USER 'root'@'%' IDENTIFIED BY '$mysql_root_password_sql'; ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysql_root_password_sql'; FLUSH PRIVILEGES;" || true
 fi
-"${compose[@]}" up -d --build application httpd console
+"${compose[@]}" up -d --build --force-recreate application httpd console
 "${compose[@]}" exec -T application php artisan mysql:createdb
 "${compose[@]}" exec -T application php artisan migrate --force
 "${compose[@]}" exec -T application php artisan sandbox:migrate --force
@@ -116,7 +116,7 @@ fi
 # Route caching currently exhausts the WORLDENGINE VM PHP memory limit on this
 # Fleetbase bundle. Leave routes uncached; route:clear keeps the live bridge fresh.
 "${compose[@]}" exec -T application php artisan registry:init || true
-"${compose[@]}" up -d queue scheduler
+"${compose[@]}" up -d --force-recreate queue scheduler
 
 sudo tee /etc/nginx/sites-enabled/himbo.express.conf >/dev/null <<'NGINX'
 server {
