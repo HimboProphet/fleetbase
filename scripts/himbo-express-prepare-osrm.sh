@@ -5,7 +5,7 @@ REMOTE_HOST="${REMOTE_HOST:-rhino@20.124.38.43}"
 SSH_KEY="${SSH_KEY:-/Users/rhino/.ssh/rhinoos-atlas12-builder}"
 REMOTE_ROUTING_DIR="${REMOTE_ROUTING_DIR:-/opt/himbo-express/routing}"
 REMOTE_BACKUP_DIR="${REMOTE_BACKUP_DIR:-/root/2rhino-backups}"
-OSRM_IMAGE="${OSRM_IMAGE:-osrm/osrm-backend:v5.27.1}"
+OSRM_IMAGE="${OSRM_IMAGE:-osrm/osrm-backend:v5.25.0}"
 PBF_URL="${PBF_URL:-https://download.geofabrik.de/north-america/us/florida-latest.osm.pbf}"
 PBF_NAME="${PBF_NAME:-himbo-florida.osm.pbf}"
 OSRM_BASENAME="${OSRM_BASENAME:-himbo-florida}"
@@ -35,10 +35,10 @@ if [ ! -s "\$PBF_NAME" ]; then
   mv "\$PBF_NAME.tmp" "\$PBF_NAME"
 fi
 
-docker pull "\$OSRM_IMAGE"
-docker run --rm -t -v "\$REMOTE_ROUTING_DIR:/data" "\$OSRM_IMAGE" osrm-extract -p /opt/car.lua "/data/\$PBF_NAME"
-docker run --rm -t -v "\$REMOTE_ROUTING_DIR:/data" "\$OSRM_IMAGE" osrm-partition "/data/\${OSRM_BASENAME}.osrm"
-docker run --rm -t -v "\$REMOTE_ROUTING_DIR:/data" "\$OSRM_IMAGE" osrm-customize "/data/\${OSRM_BASENAME}.osrm"
+sudo docker pull "\$OSRM_IMAGE"
+sudo docker run --rm -t -v "\$REMOTE_ROUTING_DIR:/data" "\$OSRM_IMAGE" osrm-extract -p /opt/car.lua "/data/\$PBF_NAME"
+sudo docker run --rm -t -v "\$REMOTE_ROUTING_DIR:/data" "\$OSRM_IMAGE" osrm-partition "/data/\${OSRM_BASENAME}.osrm"
+sudo docker run --rm -t -v "\$REMOTE_ROUTING_DIR:/data" "\$OSRM_IMAGE" osrm-customize "/data/\${OSRM_BASENAME}.osrm"
 
 test -s "\${OSRM_BASENAME}.osrm"
 test -s "\${OSRM_BASENAME}.osrm.partition"

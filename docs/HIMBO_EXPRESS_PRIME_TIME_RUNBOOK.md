@@ -57,7 +57,7 @@ Release note: public wording for the HIPAA courier lane, verified identity vendo
 
 Deployment note, 2026-07-27: `/opt/himbo-express/secrets/app.env` now contains `HIMBO_MYSQL_ROOT_PASSWORD` and `HIMBO_OSRM_HOST` for the hardened compose contract. The OSRM value was preserved from the previously running service and still points at the public OSRM demo, so a real production routing service remains a prime-time blocker. Backups: `/root/2rhino-backups/himbo-express-app-env-pre-contract-20260727T170524Z.env` and `/root/2rhino-backups/himbo-express-nginx-pre-public-shell-20260727T170655Z.conf`.
 
-Routing preparation note, 2026-07-28: the production compose file now has a disabled-by-default `routing` service using `osrm/osrm-backend:v5.27.1`. Prepare the Florida driving graph with `scripts/himbo-express-prepare-osrm.sh`, then switch `/opt/himbo-express/secrets/app.env` to `HIMBO_OSRM_HOST=http://routing:5000` and deploy. The deploy script fails closed if the self-hosted URL is selected before `/opt/himbo-express/routing/himbo-florida.osrm` exists.
+Routing preparation note, 2026-07-28: the production compose file now has a disabled-by-default `routing` service using `osrm/osrm-backend:v5.25.0`. Prepare the Florida driving graph with `scripts/himbo-express-prepare-osrm.sh`, then switch `/opt/himbo-express/secrets/app.env` to `HIMBO_OSRM_HOST=http://routing:5000` and deploy. The deploy script fails closed if the self-hosted URL is selected before `/opt/himbo-express/routing/himbo-florida.osrm` exists.
 
 ## Gate 1: Source Control And Tests
 
