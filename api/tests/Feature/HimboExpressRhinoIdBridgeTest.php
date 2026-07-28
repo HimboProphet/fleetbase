@@ -15,6 +15,7 @@ class HimboExpressRhinoIdBridgeTest extends TestCase
         $this->setEnv('RHINO_ID_BASE_URL', 'https://id.2rhino.com');
         $this->setEnv('RHINO_ID_ALLOWED_EMAILS', 'travis@2rhino.com');
         $this->setEnv('RHINO_ID_REQUIRE_EXACT_EMAILS', 'true');
+        $this->setEnv('HIMBO_COURIER_ENROLLMENT_ENABLED', 'true');
     }
 
     public function test_exchange_requires_session_token(): void
@@ -57,6 +58,18 @@ class HimboExpressRhinoIdBridgeTest extends TestCase
         $this->postJson('/int/v1/couriers/enrollments', [])
             ->assertStatus(400)
             ->assertJson(['error' => 'missing_rhino_id_session']);
+    }
+
+    public function test_courier_enrollment_is_fail_closed_until_explicitly_activated(): void
+    {
+        $this->setEnv('HIMBO_COURIER_ENROLLMENT_ENABLED', 'false');
+
+        $this->postJson('/int/v1/couriers/enrollments', [])
+            ->assertStatus(503)
+            ->assertJson([
+                'error' => 'courier_enrollment_not_active',
+                'message' => 'HIMBO Express rider activation is not open yet.',
+            ]);
     }
 
     public function test_courier_enrollment_rejects_invalid_rhino_id_session(): void

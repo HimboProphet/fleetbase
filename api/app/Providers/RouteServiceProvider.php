@@ -439,6 +439,17 @@ HTML
 
     private function submitCourierEnrollment(Request $request)
     {
+        if (!filter_var(env('HIMBO_COURIER_ENROLLMENT_ENABLED', false), FILTER_VALIDATE_BOOLEAN)) {
+            return response()->json(
+                [
+                    'error' => 'courier_enrollment_not_active',
+                    'message' => 'HIMBO Express rider activation is not open yet.',
+                    'verification_url' => rtrim((string) env('RHINOVERIFY_BASE_URL', 'https://rhinoverify.com'), '/') . '/verified-rhino-id?source=himbo-express',
+                ],
+                503
+            )->header('Cache-Control', 'no-store');
+        }
+
         $sessionToken = trim((string) $request->input('rhino_id_session', ''));
         if ($sessionToken === '') {
             Log::warning('himbo_express.courier_enrollment_missing_session', [
