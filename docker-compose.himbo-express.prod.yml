@@ -44,8 +44,6 @@ services:
     command: ["osrm-routed", "--algorithm", "mld", "/data/himbo-florida.osrm"]
     volumes:
       - /opt/himbo-express/routing:/data:ro
-    ports:
-      - "127.0.0.1:15000:5000"
 
   application:
     image: himbo-express-api:prod
