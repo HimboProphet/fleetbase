@@ -12,15 +12,17 @@ services:
     image: mysql:8.0-oracle
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - "./docker/database/:/docker-entrypoint-initdb.d/"
       - "./docker/database/mysql:/var/lib/mysql"
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_PASSWORD: "${FLEETBASE_MYSQL_ROOT_PASSWORD:?load the local Fleetbase root password from Keychain}"
       MYSQL_DATABASE: "fleetbase"
+      MYSQL_USER: "fleetbase_app"
+      MYSQL_PASSWORD: "${FLEETBASE_MYSQL_APP_PASSWORD:?load the local Fleetbase app password from Keychain}"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" --silent"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,13 +32,11 @@ services:
     platform: linux/amd64
     restart: unless-stopped
     ports:
-      - "38000:8000"
+      - "127.0.0.1:38000:8000"
     environment:
       SOCKETCLUSTER_WORKERS: 10
       SOCKETCLUSTER_BROKERS: 10
-      # SOCKETCLUSTER_OPTIONS can be set via docker-compose.override.yml for specific environments
-      # For production, use: SOCKETCLUSTER_OPTIONS: '{"origins":"https://yourdomain.com:*"}'
-      # For development, use: SOCKETCLUSTER_OPTIONS: '{"origins":"http://localhost:*"}'
+      SOCKETCLUSTER_OPTIONS: '{"origins":"http://localhost:*,https://localhost:*,ws://localhost:*,wss://localhost:*,http://127.0.0.1:*,https://127.0.0.1:*,ws://127.0.0.1:*,wss://127.0.0.1:*"}'
 
   scheduler:
     image: fleetbase/fleetbase-api:latest
@@ -48,7 +48,7 @@ services:
       timeout: 20s
       retries: 3
     environment:
-      DATABASE_URL: "mysql://root@database/fleetbase"
+      DATABASE_URL: "mysql://fleetbase_app:${FLEETBASE_MYSQL_APP_PASSWORD:?load the local Fleetbase app password from Keychain}@database/fleetbase"
       QUEUE_CONNECTION: redis
       CACHE_DRIVER: redis
       CACHE_PATH: /fleetbase/api/storage/framework/cache
@@ -68,7 +68,7 @@ services:
       timeout: 10s
       retries: 3
     environment:
-      DATABASE_URL: "mysql://root@database/fleetbase"
+      DATABASE_URL: "mysql://fleetbase_app:${FLEETBASE_MYSQL_APP_PASSWORD:?load the local Fleetbase app password from Keychain}@database/fleetbase"
       QUEUE_CONNECTION: redis
       CACHE_DRIVER: redis
       CACHE_PATH: /fleetbase/api/storage/framework/cache
@@ -86,7 +86,7 @@ services:
       args:
         ENVIRONMENT: development
     ports:
-      - "4200:4200"
+      - "127.0.0.1:4200:4200"
     volumes:
       - ./console/fleetbase.config.json:/usr/share/nginx/html/fleetbase.config.json
 
@@ -94,11 +94,11 @@ services:
     restart: unless-stopped
     image: fleetbase/fleetbase-api:latest
     volumes:
-      - ./api/.env:/fleetbase/api/.env
+      - ./api/.env:/fleetbase/api/.env:ro
       - ./api/storage/app:/fleetbase/api/storage/app
     environment:
       ENVIRONMENT: development
-      DATABASE_URL: "mysql://root@database/fleetbase"
+      DATABASE_URL: "mysql://fleetbase_app:${FLEETBASE_MYSQL_APP_PASSWORD:?load the local Fleetbase app password from Keychain}@database/fleetbase"
       QUEUE_CONNECTION: redis
       CACHE_DRIVER: redis
       CACHE_PATH: /fleetbase/api/storage/framework/cache
@@ -123,6 +123,6 @@ services:
       context: .
       dockerfile: docker/httpd/Dockerfile
     ports:
-      - "8000:80"
+      - "127.0.0.1:8000:80"
     depends_on:
       - application
