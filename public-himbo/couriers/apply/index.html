@@ -6,11 +6,14 @@
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#060807">
   <meta property="og:title" content="Become a HIMBO EXPRESS Courier">
-  <meta property="og:description" content="Verified RHINO ID gated independent contractor enrollment for HIMBO EXPRESS couriers in Wilton Manors.">
+  <meta property="og:description" content="Verified RHINO ID gated independent contractor intake for HIMBO EXPRESS couriers in Wilton Manors.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://himbo.express/couriers/apply">
   <meta property="og:image" content="https://himbo.express/himbo-assets/himbo-express-logo.png">
-  <link rel="icon" href="/himbo-assets/himbo-express-logo.png">
+  <meta property="og:image:width" content="1254">
+  <meta property="og:image:height" content="1254">
+  <link rel="icon" type="image/png" sizes="any" href="../../himbo-assets/himbo-express-logo.png">
+  <link rel="apple-touch-icon" href="../../himbo-assets/himbo-express-logo.png">
   <title>Become a HIMBO EXPRESS Courier</title>
   <style>
     :root {
@@ -181,6 +184,37 @@
       margin-top: 34px;
     }
 
+    .flow {
+      display: grid;
+      gap: 9px;
+      max-width: 620px;
+      margin-top: 18px;
+      padding-left: 0;
+      list-style: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .flow li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .flow span {
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(24, 217, 155, 0.48);
+      border-radius: 50%;
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
     .term {
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -238,6 +272,25 @@
       display: grid;
       gap: 18px;
       padding: 22px;
+    }
+
+    .notice {
+      border: 1px solid rgba(244, 211, 94, 0.36);
+      border-radius: 8px;
+      background: rgba(244, 211, 94, 0.08);
+      padding: 14px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--gold);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
     .field-grid {
@@ -387,6 +440,13 @@
       background: rgba(5, 7, 6, 0.66);
     }
 
+    footer a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--ink); }
+
     @media (max-width: 980px) {
       main { grid-template-columns: 1fr; }
       .intro { position: static; }
@@ -416,7 +476,7 @@
   <div class="shell">
     <header>
       <a class="brand" href="/" aria-label="HIMBO EXPRESS home">
-        <img src="/himbo-assets/himbo-express-logo.png" alt="">
+        <img src="../../himbo-assets/himbo-express-logo.png" alt="">
         <span>HIMBO EXPRESS</span>
       </a>
       <nav class="nav" aria-label="access">
@@ -428,15 +488,21 @@
     <main>
       <section class="intro" aria-labelledby="title">
         <div class="eyebrow">Verified RHINO ID intake</div>
-        <h1 id="title">Ride the route.</h1>
+        <h1 id="title">Become a courier.</h1>
         <p class="lede">Become a HIMBO EXPRESS Rider as an independent contractor. This lane is for owner-operators with a verified RHINO ID account, electric bike or e-scooter, clear background screen, proper liability coverage, and a refundable protection reserve collected only after approval.</p>
-        <img class="mark" src="/himbo-assets/himbo-express-logo.png" alt="HIMBO Express scooter delivery logo">
+        <img class="mark" src="../../himbo-assets/himbo-express-logo.png" alt="HIMBO Express scooter delivery logo">
         <div class="terms-strip" aria-label="courier economics">
           <div class="term"><strong>Verified ID</strong><span>Photo ID, face scan, RHINO ID badge.</span></div>
           <div class="term"><strong>$5 rider pay</strong><span>Per $10 Wilton Manors delivery.</span></div>
           <div class="term"><strong>100% tips</strong><span>Tips go to the courier.</span></div>
-          <div class="term"><strong>Rider benefit</strong><span>10% off the HIMBO Express line on HIMBO.CLOUD + free shipping.</span></div>
+          <div class="term"><strong>Data light</strong><span>No ID images, SSNs, face scans, or background reports are collected on this page.</span></div>
         </div>
+        <ol class="flow" aria-label="activation path">
+          <li><span>1</span><strong>Verify RHINO ID, photo ID, face scan, badge, and wallet pass.</strong></li>
+          <li><span>2</span><strong>Submit this contractor intake without uploading sensitive documents.</strong></li>
+          <li><span>3</span><strong>Complete screening, insurance proof, and privacy training before activation.</strong></li>
+          <li><span>4</span><strong>After approval, fund the refundable $100 protection reserve and start eligible routes.</strong></li>
+        </ol>
       </section>
 
       <section class="panel" aria-labelledby="form-title">
@@ -445,6 +511,10 @@
           <span class="status" id="rhino-status">Checking RHINO ID</span>
         </div>
         <form id="courier-form">
+          <div class="notice">
+            <strong>Privacy boundary</strong>
+            Use this page for contact, vehicle, and availability only. Do not enter Social Security numbers, medical details, delivery contents, patient or recipient information, government ID images, face images, or background-check report details here.
+          </div>
           <div class="field-grid">
             <label>
               Legal name
@@ -483,15 +553,17 @@
           <div class="checks" aria-label="required acknowledgements">
             <label class="check"><input type="checkbox" name="contractor_acknowledged" required><span>I am applying as an independent contractor, not as an employee.</span></label>
             <label class="check"><input type="checkbox" name="owns_business_acknowledged" required><span>I own and operate my own courier business.</span></label>
+            <label class="check"><input type="checkbox" name="age_authorized_acknowledged" required><span>I am at least 18 years old and legally authorized to perform independent courier services where I operate.</span></label>
             <label class="check"><input type="checkbox" name="verified_rhino_id_acknowledged" required><span>I understand HIMBO Riders require a verified RHINO ID account with government-issued photo ID, face scan, profile badge, and RHINO ID wallet pass badge.</span></label>
             <label class="check"><input type="checkbox" name="vehicle_acknowledged" required><span>I have access to an electric bike or e-scooter for courier work.</span></label>
             <label class="check"><input type="checkbox" name="insurance_acknowledged" required><span>I will maintain the liability and delivery-use insurance required for my vehicle and courier work, and provide proof before activation.</span></label>
             <label class="check"><input type="checkbox" name="background_check_acknowledged" required><span>I understand a background check is required before activation.</span></label>
+            <label class="check"><input type="checkbox" name="hipaa_training_acknowledged" required><span>I understand privacy-sensitive delivery work requires completion of HIMBO EXPRESS handling and HIPAA/privacy training before activation.</span></label>
             <label class="check"><input type="checkbox" name="protection_reserve_acknowledged" required><span>I understand the $100 Courier Protection Reserve is collected after approval, is not an activation fee, and is refundable after my account closes and documented delivery claims are resolved.</span></label>
             <label class="check"><input type="checkbox" name="protection_reserve_restore_acknowledged" required><span>I understand the reserve may be applied only to a documented lost, stolen, or damaged delivery claim while under my care, with notice and an appeal path, and must be restored before new routes if used.</span></label>
             <label class="check"><input type="checkbox" name="payout_acknowledged" required><span>I understand each Wilton Manors delivery is $10, with $5 paid to the courier and $5 retained by HIMBO EXPRESS.</span></label>
             <label class="check"><input type="checkbox" name="tips_acknowledged" required><span>I understand the courier receives 100% of tips.</span></label>
-            <label class="check"><input type="checkbox" name="privacy_acknowledged" required><span>I can follow privacy-sensitive courier handling standards required for this HIPAA courier lane.</span></label>
+            <label class="check"><input type="checkbox" name="privacy_acknowledged" required><span>I will not enter ID images, face images, SSNs, patient or recipient information, medical details, package contents, or background report details into this intake form.</span></label>
           </div>
 
           <p class="error" id="error" aria-hidden="true"></p>
@@ -510,7 +582,7 @@
 
     <footer>
       <span>Wilton Manors courier lane</span>
-      <span>Independent contractor intake</span>
+      <span>Independent contractor intake / <a href="https://github.com/HimboProphet/fleetbase">AGPL source</a></span>
     </footer>
   </div>
 
@@ -577,10 +649,12 @@
           experience: fieldValue(data, "experience"),
           contractor_acknowledged: checked(data, "contractor_acknowledged"),
           owns_business_acknowledged: checked(data, "owns_business_acknowledged"),
+          age_authorized_acknowledged: checked(data, "age_authorized_acknowledged"),
           verified_rhino_id_acknowledged: checked(data, "verified_rhino_id_acknowledged"),
           vehicle_acknowledged: checked(data, "vehicle_acknowledged"),
           insurance_acknowledged: checked(data, "insurance_acknowledged"),
           background_check_acknowledged: checked(data, "background_check_acknowledged"),
+          hipaa_training_acknowledged: checked(data, "hipaa_training_acknowledged"),
           protection_reserve_acknowledged: checked(data, "protection_reserve_acknowledged"),
           protection_reserve_restore_acknowledged: checked(data, "protection_reserve_restore_acknowledged"),
           payout_acknowledged: checked(data, "payout_acknowledged"),

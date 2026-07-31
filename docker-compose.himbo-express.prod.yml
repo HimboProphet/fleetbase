@@ -88,6 +88,8 @@ services:
       RHINO_ID_REQUIRE_EXACT_EMAILS: "true"
       RHINO_ID_EXCHANGE_RATE_LIMIT_PER_MINUTE: "12"
       RHINO_ID_FLEETBASE_TOKEN_TTL_MINUTES: "120"
+      RHINOVERIFY_BASE_URL: https://rhinoverify.com
+      HIMBO_COURIER_ENROLLMENT_ENABLED: ${HIMBO_COURIER_ENROLLMENT_ENABLED:-false}
       HIMBO_EXPRESS_DISPATCH_USER_EMAIL: admin@himbo.express
     volumes:
       - fleetbase_storage:/fleetbase/api/storage/app

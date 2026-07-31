@@ -52,6 +52,9 @@ Courier enrollment facts:
 - Courier receives $5 per Wilton Manors delivery.
 - HIMBO EXPRESS retains $5 per Wilton Manors delivery.
 - Courier receives 100% of tips.
+- Courier intake collects only contact, vehicle, availability, and acknowledgement data.
+- Courier intake must not collect government ID images, face images or biometric templates, Social Security numbers, background-check report details, patient or recipient information, medical details, or delivery contents.
+- Adult/work-authorization attestation and HIMBO EXPRESS HIPAA/privacy training are required before activation.
 
 Release note: public wording for the HIPAA courier lane, verified identity vendor flow, background check vendor flow, reserve collection/refund/claim handling, contractor agreement, insurance language, benefit terms, and tax/payment handling requires legal/compliance review before live public recruitment.
 
@@ -85,7 +88,7 @@ Fleetbase is AGPL-3.0-or-later in this repository. A public-facing modified Flee
 
 Do not launch public or multi-operator HIMBO EXPRESS on modified private Fleetbase code until one lane above is explicitly chosen.
 
-Preferred current lane: isolation. Fleetbase remains the internal operations backbone; public HIMBO pages/order intake are separate and cushioned in front of Fleetbase.
+Chosen current lane: AGPL. The modified Fleetbase source remains public at `https://github.com/HimboProphet/fleetbase`, the public HIMBO surfaces provide a clear source link, and the corresponding deployed commit must be pushed before every release. No commercial Fleetbase license is required while the deployment satisfies the AGPL source obligations. The Fleetbase console remains an internal operations surface behind RHINO ID; the courier intake API is still a public network endpoint in the modified Fleetbase application and must not be described as isolated or private.
 
 ## Gate 2: Production Configuration
 
@@ -143,6 +146,7 @@ Required before public launch:
 - Customer notification channels are defined and tested.
 - Courier/operator onboarding and role boundaries are defined.
 - Courier contractor agreement, background check consent, protection-reserve acknowledgement, insurance wording, Rider-benefit terms, and payout terms are reviewed.
+- HIPAA/privacy training content, minimum necessary handling rules, chain-of-custody steps, breach escalation, and no-PHI-in-public-intake controls are reviewed.
 - Support escalation and incident response are defined.
 - Terms, privacy, and courier-specific risk disclosures are reviewed before public customer traffic.
 

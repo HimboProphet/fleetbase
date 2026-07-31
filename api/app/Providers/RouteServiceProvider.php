@@ -439,6 +439,17 @@ HTML
 
     private function submitCourierEnrollment(Request $request)
     {
+        if (!filter_var(env('HIMBO_COURIER_ENROLLMENT_ENABLED', false), FILTER_VALIDATE_BOOLEAN)) {
+            return response()->json(
+                [
+                    'error' => 'courier_enrollment_not_active',
+                    'message' => 'HIMBO Express rider activation is not open yet.',
+                    'verification_url' => rtrim((string) env('RHINOVERIFY_BASE_URL', 'https://rhinoverify.com'), '/') . '/verified-rhino-id?source=himbo-express',
+                ],
+                503
+            )->header('Cache-Control', 'no-store');
+        }
+
         $sessionToken = trim((string) $request->input('rhino_id_session', ''));
         if ($sessionToken === '') {
             Log::warning('himbo_express.courier_enrollment_missing_session', [
@@ -503,6 +514,8 @@ HTML
                 'protection_reserve' => 'required_refundable_100_usd_after_approval',
                 'liability_insurance' => 'proof_required_before_activation',
                 'vehicle' => 'electric_bike_or_e_scooter',
+                'age_and_work_authorization' => 'rider_attestation_required',
+                'hipaa_privacy_training' => 'required_before_activation',
                 'privacy_handling' => 'required',
             ],
             'activation_pricing' => [
@@ -547,6 +560,27 @@ HTML
                 'verified_badge' => true,
                 'wallet_pass_badge' => (string) data_get($rhinoIdUser, 'wallet_pass_badge', 'Verified RHINO ID'),
             ],
+            'compliance_posture' => [
+                'intake_collects' => [
+                    'contact',
+                    'vehicle',
+                    'availability',
+                    'contractor_acknowledgements',
+                ],
+                'intake_does_not_collect' => [
+                    'government_id_images',
+                    'face_images_or_biometric_templates',
+                    'social_security_numbers',
+                    'background_check_report_details',
+                    'patient_or_recipient_information',
+                    'medical_details',
+                    'delivery_contents',
+                ],
+                'sensitive_verification_source' => 'RHINO_ID_or_approved_provider',
+                'hipaa_privacy_training_required_before_activation' => true,
+                'background_check_consent_required_before_screening' => true,
+                'legal_review_required_before_public_recruitment' => true,
+            ],
             'applicant' => [
                 'legal_name' => trim((string) $request->input('legal_name')),
                 'business_name' => trim((string) $request->input('business_name', '')),
@@ -560,16 +594,18 @@ HTML
                 'independent_contractor' => true,
                 'not_employee' => true,
                 'owns_business' => true,
+                'age_and_work_authorization' => true,
                 'verified_rhino_id' => true,
                 'government_photo_id' => true,
                 'face_scan' => true,
                 'background_check' => true,
+                'hipaa_privacy_training' => true,
                 'liability_insurance' => true,
                 'protection_reserve_refundable' => true,
                 'protection_reserve_restore_after_claim' => true,
                 'payout_split' => true,
                 'tips' => true,
-                'privacy_handling' => true,
+                'privacy_minimized_intake' => true,
             ],
         ];
 
@@ -595,6 +631,7 @@ HTML
                     'background_check_verified',
                     'verified_rhino_id_required',
                     'liability_insurance_proof_required_before_activation',
+                    'hipaa_privacy_training_required_before_activation',
                     'refundable_100_usd_protection_reserve_collected_after_approval',
                     'new_routes_paused_if_documented_claim_uses_reserve_until_restored',
                 ],
@@ -663,10 +700,12 @@ HTML
         $requiredAcknowledgements = [
             'contractor_acknowledged',
             'owns_business_acknowledged',
+            'age_authorized_acknowledged',
             'verified_rhino_id_acknowledged',
             'vehicle_acknowledged',
             'insurance_acknowledged',
             'background_check_acknowledged',
+            'hipaa_training_acknowledged',
             'protection_reserve_acknowledged',
             'protection_reserve_restore_acknowledged',
             'payout_acknowledged',

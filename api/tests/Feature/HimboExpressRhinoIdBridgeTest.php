@@ -15,6 +15,7 @@ class HimboExpressRhinoIdBridgeTest extends TestCase
         $this->setEnv('RHINO_ID_BASE_URL', 'https://id.2rhino.com');
         $this->setEnv('RHINO_ID_ALLOWED_EMAILS', 'travis@2rhino.com');
         $this->setEnv('RHINO_ID_REQUIRE_EXACT_EMAILS', 'true');
+        $this->setEnv('HIMBO_COURIER_ENROLLMENT_ENABLED', 'true');
     }
 
     public function test_exchange_requires_session_token(): void
@@ -57,6 +58,18 @@ class HimboExpressRhinoIdBridgeTest extends TestCase
         $this->postJson('/int/v1/couriers/enrollments', [])
             ->assertStatus(400)
             ->assertJson(['error' => 'missing_rhino_id_session']);
+    }
+
+    public function test_courier_enrollment_is_fail_closed_until_explicitly_activated(): void
+    {
+        $this->setEnv('HIMBO_COURIER_ENROLLMENT_ENABLED', 'false');
+
+        $this->postJson('/int/v1/couriers/enrollments', [])
+            ->assertStatus(503)
+            ->assertJson([
+                'error' => 'courier_enrollment_not_active',
+                'message' => 'HIMBO Express rider activation is not open yet.',
+            ]);
     }
 
     public function test_courier_enrollment_rejects_invalid_rhino_id_session(): void
@@ -117,10 +130,12 @@ class HimboExpressRhinoIdBridgeTest extends TestCase
             'experience' => 'Local delivery',
             'contractor_acknowledged' => true,
             'owns_business_acknowledged' => true,
+            'age_authorized_acknowledged' => true,
             'verified_rhino_id_acknowledged' => true,
             'vehicle_acknowledged' => true,
             'insurance_acknowledged' => true,
             'background_check_acknowledged' => true,
+            'hipaa_training_acknowledged' => true,
             'protection_reserve_acknowledged' => true,
             'protection_reserve_restore_acknowledged' => true,
             'payout_acknowledged' => true,
@@ -144,6 +159,8 @@ class HimboExpressRhinoIdBridgeTest extends TestCase
         $this->assertStringContainsString('"wallet_pass_badge":"Verified RHINO ID"', $stored);
         $this->assertStringContainsString('"protection_reserve":"required_refundable_100_usd_after_approval"', $stored);
         $this->assertStringContainsString('"liability_insurance":"proof_required_before_activation"', $stored);
+        $this->assertStringContainsString('"hipaa_privacy_training":"required_before_activation"', $stored);
+        $this->assertStringContainsString('"intake_does_not_collect":["government_id_images","face_images_or_biometric_templates","social_security_numbers","background_check_report_details","patient_or_recipient_information","medical_details","delivery_contents"]', $stored);
         $this->assertStringContainsString('"entitlement":"himbo_express_active_rider"', $stored);
     }
 
