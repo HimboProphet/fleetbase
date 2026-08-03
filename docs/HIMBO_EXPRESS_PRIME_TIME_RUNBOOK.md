@@ -88,7 +88,7 @@ Fleetbase is AGPL-3.0-or-later in this repository. A public-facing modified Flee
 
 Do not launch public or multi-operator HIMBO EXPRESS on modified private Fleetbase code until one lane above is explicitly chosen.
 
-Chosen current lane: AGPL. The modified Fleetbase source remains public at `https://github.com/HimboProphet/fleetbase`, the public HIMBO surfaces provide a clear source link, and the corresponding deployed commit must be pushed before every release. No commercial Fleetbase license is required while the deployment satisfies the AGPL source obligations. The Fleetbase console remains an internal operations surface behind RHINO ID; the courier intake API is still a public network endpoint in the modified Fleetbase application and must not be described as isolated or private.
+Chosen current lane: AGPL. The modified Fleetbase source remains public on `https://github.com/HimboProphet/fleetbase/tree/agent/himbo-express-rider-enrollment`, the public HIMBO surfaces link directly to that source branch, and the corresponding deployed commit must be pushed before every release. No commercial Fleetbase license is required while the deployment satisfies the AGPL source obligations. The Fleetbase console remains an internal operations surface behind RHINO ID; the courier intake API is still a public network endpoint in the modified Fleetbase application and must not be described as isolated or private.
 
 ## Gate 2: Production Configuration
 
